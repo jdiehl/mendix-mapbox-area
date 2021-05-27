@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="mendix.mapbox.Mapbox" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Mapbox</name>
+    <description>Mapbox Map</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="General">
+            <property key="accessToken" type="string" required="true">
+                <caption>Mapbox Access Token</caption>
+                <description>Get it here: https://account.mapbox.com</description>
+            </property>
+            <property key="width" type="string" required="false">
+                <caption>Width</caption>
+                <description>Default: 100%</description>
+            </property>
+            <property key="height" type="string" required="false">
+                <caption>Height</caption>
+                <description>Default: 400px</description>
+            </property>
+        </propertyGroup>
+    </properties>
+</widget>
