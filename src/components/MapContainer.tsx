@@ -1,7 +1,7 @@
 import { createElement, FC, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
 import { fillLayer, strokeLayer } from "../lib/layers";
-import { regions } from "../lib/regions";
+import { getRegions } from "../lib/regions";
 
 interface MapContainerProps {
     accessToken: string;
@@ -15,6 +15,8 @@ export const MapContainer: FC<MapContainerProps> = ({ accessToken, width, height
         longitude: 8.2123835,
         zoom: 5
     });
+
+    const regions = getRegions();
 
     return (
         <ReactMapGL
