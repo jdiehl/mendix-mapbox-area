@@ -5,10 +5,12 @@ export const fillLayer: LayerProps = {
     type: "fill",
     paint: {
         "fill-color": {
-            property: "level",
+            property: "incidence",
             stops: [
-                [1, "#0080ff"],
-                [2, "#ff8000"]
+                [0, "#77DD77"],
+                [25, "#FACA4A"],
+                [50, "#FF6161"],
+                [100, "#CD45E9"]
             ]
         },
         "fill-opacity": 0.5

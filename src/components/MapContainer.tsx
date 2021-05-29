@@ -1,22 +1,24 @@
 import { createElement, FC, useState } from "react";
 import ReactMapGL, { Source, Layer } from "react-map-gl";
+import { ListValue } from "mendix";
 import { fillLayer, strokeLayer } from "../lib/layers";
-import { getRegions } from "../lib/regions";
+import { useRegions } from "../lib/useRegions";
 
 interface MapContainerProps {
     accessToken: string;
     width: string;
     height: string;
+    incidences?: ListValue;
 }
 
-export const MapContainer: FC<MapContainerProps> = ({ accessToken, width, height }) => {
+export const MapContainer: FC<MapContainerProps> = ({ accessToken, width, height, incidences }) => {
     const [viewport, setViewport] = useState({
         latitude: 51.1543787,
         longitude: 8.2123835,
         zoom: 5
     });
 
-    const regions = getRegions();
+    const regions = useRegions(incidences);
 
     return (
         <ReactMapGL
@@ -27,10 +29,12 @@ export const MapContainer: FC<MapContainerProps> = ({ accessToken, width, height
             style="mapbox://styles/mapbox/light-v11"
             onViewportChange={(viewport: any) => setViewport(viewport)}
         >
-            <Source id="regions" type="geojson" data={regions}>
-                <Layer {...fillLayer} />
-                <Layer {...strokeLayer} />
-            </Source>
+            {regions && (
+                <Source id="regions" type="geojson" data={regions}>
+                    <Layer {...fillLayer} />
+                    <Layer {...strokeLayer} />
+                </Source>
+            )}
         </ReactMapGL>
     );
 };

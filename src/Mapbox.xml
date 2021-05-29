@@ -12,6 +12,10 @@
                 <caption>Mapbox Access Token</caption>
                 <description>Get it here: https://account.mapbox.com</description>
             </property>
+            <property key="incidences" type="datasource" isList="true" required="false">
+                <caption>List of CountyIncidences</caption>
+                <description />
+            </property>
             <property key="width" type="string" required="false">
                 <caption>Width</caption>
                 <description>Default: 100%</description>
