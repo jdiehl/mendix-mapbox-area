@@ -4,7 +4,8 @@
  * @author Mendix UI Content Team
  */
 import { CSSProperties } from "react";
-import { ListValue } from "mendix";
+import { ListValue, ListAttributeValue } from "mendix";
+import { Big } from "big.js";
 
 export interface MapboxContainerProps {
     name: string;
@@ -13,6 +14,8 @@ export interface MapboxContainerProps {
     tabIndex?: number;
     accessToken: string;
     incidences?: ListValue;
+    rsAttr?: ListAttributeValue<string>;
+    levelAttr?: ListAttributeValue<Big>;
     width: string;
     height: string;
 }
@@ -22,6 +25,8 @@ export interface MapboxPreviewProps {
     style: string;
     accessToken: string;
     incidences: {} | null;
+    rsAttr: string;
+    levelAttr: string;
     width: string;
     height: string;
 }

@@ -1,37 +1,52 @@
-import { useEffect, useState } from "react";
-import { ListValue } from "mendix";
+import { Big } from "big.js";
+import { ListValue, ListAttributeValue } from "mendix";
 import { FeatureCollection } from "geojson";
 import data from "./opendatalab";
+import { useEffect, useState } from "react";
 
-export function useRegions(incidences: ListValue | undefined): FeatureCollection | undefined {
-    const [regions, setRegions] = useState<FeatureCollection | undefined>(undefined);
+interface LoadRegionsOptions {
+    incidences?: ListValue;
+    rsAttr?: ListAttributeValue<string>;
+    levelAttr?: ListAttributeValue<Big>;
+}
+
+export function useRegions({ incidences, rsAttr, levelAttr }: LoadRegionsOptions): FeatureCollection | undefined {
+    const [regions, setRegions] = useState<FeatureCollection>();
 
     useEffect(() => {
-        // extract guids from items
-        const guids: string[] = incidences?.items?.map(obj => obj.id) || [];
+        if (incidences && incidences.status !== "available") {
+            // we are still loading data
+            return undefined;
+        }
 
-        // define callback for data retrieval
-        const callback = (items: any): void => {
-            (window as any).items = items;
-            // load regions
-            const regions: FeatureCollection = JSON.parse(data);
+        // create the geo features
+        const regions = JSON.parse(data);
+
+        if (incidences !== undefined && rsAttr !== undefined && levelAttr !== undefined) {
+            const levels: Record<string, number> = {};
+
+            // fill levels index
+            for (const item of incidences.items ?? []) {
+                const rs = rsAttr.get(item).value;
+                const level = Number(levelAttr.get(item).value);
+                if (rs !== undefined && level !== undefined) {
+                    levels[rs] = level;
+                }
+            }
 
             // ammend regions with incidence data
             for (const feature of regions.features) {
                 const { RS } = feature.properties!;
-                const rsItems = items.filter((item: any) => item.jsonData.attributes.RS.value === RS);
-                if (rsItems.length > 0) {
-                    feature.properties!.incidence = parseFloat(rsItems[0].jsonData.attributes.Incidence.value);
+                const level = levels[RS];
+                if (level !== undefined) {
+                    feature.properties!.level = level;
                 }
             }
+        }
 
-            // update state
-            setRegions(regions);
-        };
-
-        // load items
-        (window as any).mx.data.get({ guids, callback });
-    }, [incidences]);
+        setRegions(regions);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [incidences?.status]);
 
     return regions;
 }

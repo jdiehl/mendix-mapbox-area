@@ -5,7 +5,7 @@ export const fillLayer: LayerProps = {
     type: "fill",
     paint: {
         "fill-color": {
-            property: "incidence",
+            property: "level",
             stops: [
                 [0, "#77DD77"],
                 [25, "#FACA4A"],
