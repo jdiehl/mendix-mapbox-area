@@ -44,6 +44,7 @@ export const MapContainer: FC<MapContainerProps> = ({ accessToken, width, height
         const features = mapRef.current!.queryRenderedFeatures(bbox, { layers: ["fill"] });
         if (features.length <= 0) {
             setPopup(null);
+            return;
         }
         const feature = features[0];
         setPopup({
